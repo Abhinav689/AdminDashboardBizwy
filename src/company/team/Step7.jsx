@@ -11,6 +11,66 @@ import {
 } from '@mui/material';
 import { UploadFile as UploadFileIcon, Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
 
+const styles = {
+  uploadBox: {
+    border: '2px dashed grey',
+    borderRadius: '4px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+    cursor: 'pointer',
+    width: '100%',
+    height: '200px',
+    marginBottom: '1rem',
+  },
+  fileInput: {
+    display: 'none',
+  },
+  container: {
+    padding: '2rem',
+    marginTop: '30rem',
+    marginBottom: '2rem',
+    backgroundColor: '#333', // Dark background
+    color: 'white',
+    borderRadius: '8px',
+  },
+  textField: {
+    '& .MuiInputLabel-root': { color: 'white' }, // White label color
+    '& .MuiInputBase-input': { color: 'white' }, // White text color
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: 'white', // White border
+      },
+      '&:hover fieldset': {
+        borderColor: 'white',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'white',
+      },
+    },
+    marginBottom: '1rem',
+  },
+  sectionTitle: {
+    backgroundColor: '#333',
+    color: 'white',
+    padding: '1rem',
+    borderRadius: '4px',
+  },
+  divider: {
+    backgroundColor: 'grey',
+    marginY: '2rem',
+    width: '100%',
+  },
+  iconButtonBox: {
+    position: 'absolute',
+    bottom: '0',
+    display: 'flex',
+    justifyContent: 'center',
+    width: '100%',
+  },
+};
+
 function Step7({ formData = {}, handleSave }) {
   const [aadharImage, setAadharImage] = useState(formData.aadharImage || null);
   const [panImage, setPanImage] = useState(formData.panImage || null);
@@ -27,13 +87,27 @@ function Step7({ formData = {}, handleSave }) {
     handleSave({ [name]: null });
   };
 
+  const renderImagePreview = (image) => {
+    if (image) {
+      return (
+        <img
+          src={URL.createObjectURL(image)}
+          alt="Uploaded"
+          style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+        />
+      );
+    }
+    return <UploadFileIcon fontSize="large" sx={{ color: 'white' }} />;
+  };
+
   return (
-    <Container maxWidth="md" style={{marginTop:"30rem"}}>
-      <Paper elevation={3} sx={{ p: 4, mt: 4, mb: 4 }}>
+    <Container maxWidth="md">
+      <Paper elevation={3} sx={styles.container}>
         <Box display="flex" flexDirection="column" alignItems="center">
+          
           {/* Aadhar Section */}
           <Box width="100%" mb={3}>
-            <Typography variant="h5" component="h2" sx={{ bgcolor: '#333', color: 'white', p: 2 }}>
+            <Typography variant="h5" component="h2" sx={styles.sectionTitle}>
               Aadhar
             </Typography>
             <TextField
@@ -42,48 +116,38 @@ function Step7({ formData = {}, handleSave }) {
               value={formData.aadharNumber || ''}
               onChange={(e) => handleSave({ aadharNumber: e.target.value })}
               fullWidth
-              margin="normal"
+              sx={styles.textField}
             />
-            <Box
-              border="2px dashed grey"
-              borderRadius="4px"
-              width="100%"
-              height="200px"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              position="relative"
-              mb={2}
-            >
+            <Box sx={styles.uploadBox}>
               <input
                 type="file"
                 name="aadharImage"
                 accept="image/*"
                 onChange={(e) => handleFileChange(e, setAadharImage)}
-                style={{ display: 'none' }}
+                style={styles.fileInput}
                 id="aadhar-upload"
               />
-              <label htmlFor="aadhar-upload">
-                <UploadFileIcon fontSize="large" />
+              <label htmlFor="aadhar-upload" style={{ width: '100%', height: '100%' }}>
+                {renderImagePreview(aadharImage)}
               </label>
               {aadharImage && (
-                <Box position="absolute" bottom="0" display="flex" justifyContent="center" width="100%">
+                <Box sx={styles.iconButtonBox}>
                   <IconButton size="small" onClick={() => document.getElementById('aadhar-upload').click()}>
-                    <EditIcon />
+                    <EditIcon sx={{ color: 'white' }} />
                   </IconButton>
                   <IconButton size="small" onClick={() => handleDeleteImage('aadharImage', setAadharImage)}>
-                    <DeleteIcon />
+                    <DeleteIcon sx={{ color: 'white' }} />
                   </IconButton>
                 </Box>
               )}
             </Box>
           </Box>
 
-          <Divider sx={{ my: 3, width: '100%' }} />
+          <Divider sx={styles.divider} />
 
           {/* PAN Card Section */}
           <Box width="100%" mb={3}>
-            <Typography variant="h5" component="h2" sx={{ bgcolor: '#333', color: 'white', p: 2 }}>
+            <Typography variant="h5" component="h2" sx={styles.sectionTitle}>
               PAN Card
             </Typography>
             <TextField
@@ -92,48 +156,38 @@ function Step7({ formData = {}, handleSave }) {
               value={formData.panNumber || ''}
               onChange={(e) => handleSave({ panNumber: e.target.value })}
               fullWidth
-              margin="normal"
+              sx={styles.textField}
             />
-            <Box
-              border="2px dashed grey"
-              borderRadius="4px"
-              width="100%"
-              height="200px"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              position="relative"
-              mb={2}
-            >
+            <Box sx={styles.uploadBox}>
               <input
                 type="file"
                 name="panImage"
                 accept="image/*"
                 onChange={(e) => handleFileChange(e, setPanImage)}
-                style={{ display: 'none' }}
+                style={styles.fileInput}
                 id="pan-upload"
               />
-              <label htmlFor="pan-upload">
-                <UploadFileIcon fontSize="large" />
+              <label htmlFor="pan-upload" style={{ width: '100%', height: '100%' }}>
+                {renderImagePreview(panImage)}
               </label>
               {panImage && (
-                <Box position="absolute" bottom="0" display="flex" justifyContent="center" width="100%">
+                <Box sx={styles.iconButtonBox}>
                   <IconButton size="small" onClick={() => document.getElementById('pan-upload').click()}>
-                    <EditIcon />
+                    <EditIcon sx={{ color: 'white' }} />
                   </IconButton>
                   <IconButton size="small" onClick={() => handleDeleteImage('panImage', setPanImage)}>
-                    <DeleteIcon />
+                    <DeleteIcon sx={{ color: 'white' }} />
                   </IconButton>
                 </Box>
               )}
             </Box>
           </Box>
 
-          <Divider sx={{ my: 3, width: '100%' }} />
+          <Divider sx={styles.divider} />
 
           {/* GST Section */}
           <Box width="100%">
-            <Typography variant="h5" component="h2" sx={{ bgcolor: '#333', color: 'white', p: 2 }}>
+            <Typography variant="h5" component="h2" sx={styles.sectionTitle}>
               GST
             </Typography>
             <TextField
@@ -142,37 +196,27 @@ function Step7({ formData = {}, handleSave }) {
               value={formData.gstNumber || ''}
               onChange={(e) => handleSave({ gstNumber: e.target.value })}
               fullWidth
-              margin="normal"
+              sx={styles.textField}
             />
-            <Box
-              border="2px dashed grey"
-              borderRadius="4px"
-              width="100%"
-              height="200px"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              position="relative"
-              mb={2}
-            >
+            <Box sx={styles.uploadBox}>
               <input
                 type="file"
                 name="gstImage"
                 accept="image/*"
                 onChange={(e) => handleFileChange(e, setGstImage)}
-                style={{ display: 'none' }}
+                style={styles.fileInput}
                 id="gst-upload"
               />
-              <label htmlFor="gst-upload">
-                <UploadFileIcon fontSize="large" />
+              <label htmlFor="gst-upload" style={{ width: '100%', height: '100%' }}>
+                {renderImagePreview(gstImage)}
               </label>
               {gstImage && (
-                <Box position="absolute" bottom="0" display="flex" justifyContent="center" width="100%">
+                <Box sx={styles.iconButtonBox}>
                   <IconButton size="small" onClick={() => document.getElementById('gst-upload').click()}>
-                    <EditIcon />
+                    <EditIcon sx={{ color: 'white' }} />
                   </IconButton>
                   <IconButton size="small" onClick={() => handleDeleteImage('gstImage', setGstImage)}>
-                    <DeleteIcon />
+                    <DeleteIcon sx={{ color: 'white' }} />
                   </IconButton>
                 </Box>
               )}
