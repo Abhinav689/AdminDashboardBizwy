@@ -112,35 +112,35 @@ function Step2({ formData, handleSave }) {
 
   return (
     <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-      <Paper elevation={3} sx={{ p: 3, width: '100%', maxWidth: '800px' }}>
+      <Paper elevation={3} sx={{ p: 3, width: '100%', maxWidth: '800px', backgroundColor: '#333', color: 'white' }}>
         <Typography variant="h4" gutterBottom textAlign="center">Branch Information</Typography>
-        <Table>
+        <Table sx={{ color: 'white' }}>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Business Name</TableCell>
-              <TableCell>Branch Type</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Phone Number</TableCell>
-              <TableCell>Address</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell sx={{ color: 'white' }}>ID</TableCell>
+              <TableCell sx={{ color: 'white' }}>Business Name</TableCell>
+              <TableCell sx={{ color: 'white' }}>Branch Type</TableCell>
+              <TableCell sx={{ color: 'white' }}>Email</TableCell>
+              <TableCell sx={{ color: 'white' }}>Phone Number</TableCell>
+              <TableCell sx={{ color: 'white' }}>Address</TableCell>
+              <TableCell sx={{ color: 'white' }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {(formData.addresses || []).map((address, index) => (
               <TableRow key={index}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>{address.businessName}</TableCell>
-                <TableCell>{address.branchType}</TableCell>
-                <TableCell>{formData.email}</TableCell>
-                <TableCell>{formData.phone}</TableCell>
-                <TableCell>{address.address}</TableCell>
+                <TableCell sx={{ color: 'white' }}>{index + 1}</TableCell>
+                <TableCell sx={{ color: 'white' }}>{address.businessName}</TableCell>
+                <TableCell sx={{ color: 'white' }}>{address.branchType}</TableCell>
+                <TableCell sx={{ color: 'white' }}>{formData.email}</TableCell>
+                <TableCell sx={{ color: 'white' }}>{formData.phone}</TableCell>
+                <TableCell sx={{ color: 'white' }}>{address.address}</TableCell>
                 <TableCell>
                   <Button
                     aria-owns={anchorEl ? 'simple-popper' : undefined}
                     aria-haspopup="true"
                     onClick={(event) => handlePopoverOpen(event, address)}
-                    sx={{ color: 'black', ml: 1 }}
+                    sx={{ color: 'white', ml: 1 }}
                   >
                     ...
                   </Button>
@@ -149,7 +149,7 @@ function Step2({ formData, handleSave }) {
             ))}
           </TableBody>
         </Table>
-        <Button variant="outlined" onClick={() => setOpen(true)} sx={{ mt: 2 }}>Add Address</Button>
+        <Button variant="outlined" onClick={() => setOpen(true)} sx={{ mt: 2, color: 'white', borderColor: 'white' }}>Add Address</Button>
         <Popover
           id="simple-popper"
           open={Boolean(anchorEl)}
@@ -164,7 +164,7 @@ function Step2({ formData, handleSave }) {
             horizontal: 'left',
           }}
         >
-          <Box sx={{ p: 2 }}>
+          <Box sx={{ p: 2, color: 'black' }}>
             <Button onClick={() => handleEditAddress(editedAddress)}>Edit</Button>
             <Button onClick={() => handleDeleteAddress(editedAddress)}>Delete</Button>
           </Box>
@@ -174,8 +174,8 @@ function Step2({ formData, handleSave }) {
           onClose={() => setOpen(false)}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">{editMode ? 'Edit Address' : 'Add Address'}</DialogTitle>
-          <DialogContent>
+          <DialogTitle id="form-dialog-title" sx={{ color: 'white', backgroundColor: '#333' }}>{editMode ? 'Edit Address' : 'Add Address'}</DialogTitle>
+          <DialogContent sx={{ backgroundColor: '#333', color: 'white' }}>
             <TextField
               label="Branch Type"
               name="branchType"
@@ -184,6 +184,8 @@ function Step2({ formData, handleSave }) {
               fullWidth
               margin="normal"
               select
+              InputLabelProps={{ style: { color: 'white' } }}
+              sx={{ color: 'white' }}
             >
               <MenuItem value="main">Main</MenuItem>
               <MenuItem value="temporary">Temporary</MenuItem>
@@ -195,6 +197,8 @@ function Step2({ formData, handleSave }) {
               onChange={handleChange}
               fullWidth
               margin="normal"
+              InputLabelProps={{ style: { color: 'white' } }}
+              sx={{ color: 'white' }}
             />
             <TextField
               label="Address"
@@ -203,6 +207,8 @@ function Step2({ formData, handleSave }) {
               onChange={handleChange}
               fullWidth
               margin="normal"
+              InputLabelProps={{ style: { color: 'white' } }}
+              sx={{ color: 'white' }}
             />
             <TextField
               label="Country"
@@ -212,6 +218,8 @@ function Step2({ formData, handleSave }) {
               fullWidth
               margin="normal"
               select
+              InputLabelProps={{ style: { color: 'white' } }}
+              sx={{ color: 'white' }}
             >
               {countries.map((country) => (
                 <MenuItem key={country.iso2} value={country.iso2}>{country.name}</MenuItem>
@@ -226,6 +234,8 @@ function Step2({ formData, handleSave }) {
               margin="normal"
               select
               disabled={!states.length}
+              InputLabelProps={{ style: { color: 'white' } }}
+              sx={{ color: 'white' }}
             >
               {states.map((state) => (
                 <MenuItem key={state.iso2} value={state.iso2}>{state.name}</MenuItem>
@@ -240,6 +250,8 @@ function Step2({ formData, handleSave }) {
               margin="normal"
               select
               disabled={!cities.length}
+              InputLabelProps={{ style: { color: 'white' } }}
+              sx={{ color: 'white' }}
             >
               {cities.map((city) => (
                 <MenuItem key={city.id} value={city.name}>{city.name}</MenuItem>
@@ -252,19 +264,26 @@ function Step2({ formData, handleSave }) {
               onChange={handleChange}
               fullWidth
               margin="normal"
+              InputLabelProps={{ style: { color: 'white' } }}
+              sx={{ color: 'white' }}
             />
           </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setOpen(false)}>Cancel</Button>
-            <Button onClick={editMode ? () => {
-              const updatedFormData = {
-                ...formData,
-                addresses: formData.addresses.map((a) => a === editedAddress ? addressData : a)
-              };
-              handleSave(updatedFormData);
-              setOpen(false);
-              setEditMode(false);
-            } : handleAddAddress}>{editMode ? 'Save' : 'Add'}</Button>
+          <DialogActions sx={{ backgroundColor: '#333' }}>
+            <Button onClick={() => setOpen(false)} sx={{ color: 'white' }}>Cancel</Button>
+            <Button
+              sx={{ color: 'white' }}
+              onClick={editMode ? () => {
+                const updatedFormData = {
+                  ...formData,
+                  addresses: formData.addresses.map((a) => a === editedAddress ? addressData : a)
+                };
+                handleSave(updatedFormData);
+                setOpen(false);
+                setEditMode(false);
+              } : handleAddAddress}
+            >
+              {editMode ? 'Save' : 'Add'}
+            </Button>
           </DialogActions>
         </Dialog>
       </Paper>
