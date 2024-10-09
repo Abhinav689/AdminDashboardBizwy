@@ -1,18 +1,92 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
   TextField,
   Grid,
   Divider,
-  Paper
+  Paper, Button
 } from '@mui/material';
-
 function Step8({ formData }) {
   const { workingDays = [] } = formData;
   const { primary, secondary } = formData;
   const instorePayments = formData.instorePayments || [];
   const integrations = formData.integrations || [];
+  // Function to handle form submission
+  const handleSubmit = () => {
+    const formDataToSend = new FormData();
+
+    // Append text data
+    formDataToSend.append('name', formData.name);
+    formDataToSend.append('email', formData.email);
+    formDataToSend.append('phone', formData.phone);
+    formDataToSend.append('businessType', formData.businessType);
+    formDataToSend.append('timeZone', formData.timeZone);
+    formDataToSend.append('openingTime', formData.openingTime);
+    formDataToSend.append('closingTime', formData.closingTime);
+    formDataToSend.append('workingDays', formData.workingDays.join(', '));
+    formDataToSend.append('description', formData.description);
+    formDataToSend.append('currency', formData.currency);
+
+    // Append numbers: Aadhar, PAN, GST
+    formDataToSend.append('aadharNumber', formData.aadharNumber);
+    formDataToSend.append('panNumber', formData.panNumber);
+    formDataToSend.append('gstNumber', formData.gstNumber);
+
+    // Append notifications (as 1 or 0 for true/false)
+    formDataToSend.append('customerNotification', formData.customerNotification ? '1' : '0');
+    formDataToSend.append('employeeNotification', formData.employeeNotification ? '1' : '0');
+    formDataToSend.append('customNotification', formData.customNotification ? '1' : '0');
+
+    // Append instore payments and integrations (send them as JSON strings)
+    formDataToSend.append('instorePayments', JSON.stringify(formData.instorePayments));
+    formDataToSend.append('integrations', JSON.stringify(formData.integrations));
+
+    // Append branches as JSON string
+    if (formData.addresses && formData.addresses.length > 0) {
+        formDataToSend.append('branches', JSON.stringify(formData.addresses)); // Send branches as JSON
+    }
+
+    // Append images (if they exist)
+    if (formData.profileLogo) {
+        formDataToSend.append('profileLogo', formData.profileLogo);
+    }
+    if (formData.profileBanner) {
+        formDataToSend.append('profileBanner', formData.profileBanner);
+    }
+    if (formData.aadharImage) {
+        formDataToSend.append('aadharImage', formData.aadharImage);
+    }
+    if (formData.panImage) {
+        formDataToSend.append('panImage', formData.panImage);
+    }
+    if (formData.gstImage) {
+        formDataToSend.append('gstImage', formData.gstImage);
+    }
+
+    // Send the form data using fetch
+    fetch('http://localhost:8080/bizwy/saveFormData.php', {
+        method: 'POST',
+        body: formDataToSend,
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not OK');
+            }
+            return response.json();
+        })
+        .then((data) => {
+            if (data.success) {
+                alert('Form submitted successfully!');
+            } else {
+                alert('Failed to submit form: ' + data.message);
+            }
+        })
+        .catch((error) => {
+            alert('An error occurred: ' + error.message);
+        });
+};
+
   return (
     <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" p={3} sx={{mt:200}}>
       <Paper elevation={3} sx={{ p: 3, width: '100%', maxWidth: '900px' }}>
@@ -188,13 +262,19 @@ function Step8({ formData }) {
           <Typography variant="h6" bgcolor="#333" color="white" p={2}>
             Uploaded Images
           </Typography>
-          <TextField
+             {/* Profile Logo */}
+             <TextField
             label="Profile Logo"
             value={formData.profileLogo ? formData.profileLogo.name : 'Not uploaded'}
             fullWidth
             margin="normal"
             InputProps={{ readOnly: true }}
           />
+          {formData.profileLogo && (
+            <img src={URL.createObjectURL(formData.profileLogo)} alt="Profile Logo" style={{ width: '100px', height: '100px' }} />
+          )}
+
+          {/* Profile Banner */}
           <TextField
             label="Banner"
             value={formData.profileBanner ? formData.profileBanner.name : 'Not uploaded'}
@@ -202,6 +282,9 @@ function Step8({ formData }) {
             margin="normal"
             InputProps={{ readOnly: true }}
           />
+          {formData.profileBanner && (
+            <img src={URL.createObjectURL(formData.profileBanner)} alt="Profile Banner" style={{ width: '100px', height: '100px' }} />
+          )}
         </Box>
 
         {/* Display Selected Theme Colors */}
@@ -379,6 +462,11 @@ function Step8({ formData }) {
             margin="normal"
             InputProps={{ readOnly: true }}
           />
+             {/* Aadhar Image */}
+      
+             {formData.aadharImage && (
+            <img src={URL.createObjectURL(formData.aadharImage)} alt="Aadhar Image" style={{ width: '100px', height: '100px' }} />
+          )}
           <TextField
             label="PAN Number"
             value={formData.panNumber || ''}
@@ -386,6 +474,11 @@ function Step8({ formData }) {
             margin="normal"
             InputProps={{ readOnly: true }}
           />
+             {/* PAN Image */}
+        
+             {formData.panImage && (
+            <img src={URL.createObjectURL(formData.panImage)} alt="PAN Image" style={{ width: '100px', height: '100px' }} />
+          )}
           <TextField
             label="GST Number"
             value={formData.gstNumber || ''}
@@ -393,8 +486,18 @@ function Step8({ formData }) {
             margin="normal"
             InputProps={{ readOnly: true }}
           />
+             {/* GST Image */}
+             {formData.gstImage && (
+            <img src={URL.createObjectURL(formData.gstImage)} alt="GST Image" style={{ width: '100px', height: '100px' }} />
+          )}
         </Box>
+        
       </Paper>
+<Box mt={4} textAlign="center">
+          <Button variant="contained" color="primary" onClick={handleSubmit}>
+            Submit
+          </Button>
+        </Box>
     </Box>
   );
 }
