@@ -365,7 +365,7 @@ const CustomSidebar = () => {
 
            )}
   
-          <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
+          <Box sx={{  mt: -15,display: "flex", justifyContent: "flex-end" }}>
             {activeStep > 0 && (
               <Button
                 onClick={handleBack}
