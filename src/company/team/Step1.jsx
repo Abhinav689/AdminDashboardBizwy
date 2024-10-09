@@ -42,7 +42,7 @@ function Step1({ formData, updateFormData }) {
   return (
     <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
       <Box width="100%" maxWidth="600px" p={3} border={1} borderRadius={2} boxShadow={3}>
-        <Typography variant="h4" gutterBottom textAlign="center">Registration Form</Typography>
+        <Typography variant="h4" gutterBottom textAlign="center" sx={{ color: 'white' }}>Registration Form</Typography>
         
         <TextField
           label="Name"
@@ -51,6 +51,10 @@ function Step1({ formData, updateFormData }) {
           onChange={handleChange}
           fullWidth
           margin="normal"
+          InputLabelProps={{
+            style: { color: 'white' }, // Set label color to white
+          }}
+          sx={{ input: { color: 'white' } }} // Set input text color to white
         />
         
         <Box display="flex" justifyContent="space-between">
@@ -61,7 +65,10 @@ function Step1({ formData, updateFormData }) {
             onChange={handleChange}
             fullWidth
             margin="normal"
-            sx={{ mr: 1 }}
+            InputLabelProps={{
+              style: { color: 'white' }, // Set label color to white
+            }}
+            sx={{ input: { color: 'white' }, mr: 1 }} // Set input text color to white
           />
           <TextField
             label="Phone Number"
@@ -70,17 +77,21 @@ function Step1({ formData, updateFormData }) {
             onChange={handleChange}
             fullWidth
             margin="normal"
-            sx={{ ml: 1 }}
+            InputLabelProps={{
+              style: { color: 'white' }, // Set label color to white
+            }}
+            sx={{ input: { color: 'white' }, ml: 1 }} // Set input text color to white
           />
         </Box>
 
         <FormControl fullWidth margin="normal">
-          <InputLabel>Business Type</InputLabel>
+          <InputLabel style={{ color: 'white' }}>Business Type</InputLabel>
           <Select
             label="Business Type"
             name="businessType"
             value={data.businessType}
             onChange={handleChange}
+            sx={{ color: 'white' }} // Set selected text color to white
           >
             <MenuItem value="Retail">Retail</MenuItem>
             <MenuItem value="Food">Food</MenuItem>
@@ -90,12 +101,13 @@ function Step1({ formData, updateFormData }) {
         </FormControl>
         
         <FormControl fullWidth margin="normal">
-          <InputLabel>Time Zone</InputLabel>
+          <InputLabel style={{ color: 'white' }}>Time Zone</InputLabel>
           <Select
             label="Time Zone"
             name="timeZone"
             value={data.timeZone}
             onChange={handleChange}
+            sx={{ color: 'white' }} // Set selected text color to white
           >
             <MenuItem value="PST">PST</MenuItem>
             <MenuItem value="EST">EST</MenuItem>
@@ -113,9 +125,9 @@ function Step1({ formData, updateFormData }) {
             fullWidth
             margin="normal"
             type="time"
-            InputLabelProps={{ shrink: true }}
+            InputLabelProps={{ shrink: true, style: { color: 'white' } }} // Set label color to white
             inputProps={{ step: 300 }} // 5 minutes
-            sx={{ mr: 1 }}
+            sx={{ input: { color: 'white' }, mr: 1 }} // Set input text color to white
           />
           <TextField
             label="Closing Time"
@@ -125,13 +137,13 @@ function Step1({ formData, updateFormData }) {
             fullWidth
             margin="normal"
             type="time"
-            InputLabelProps={{ shrink: true }}
+            InputLabelProps={{ shrink: true, style: { color: 'white' } }} // Set label color to white
             inputProps={{ step: 300 }} // 5 minutes
-            sx={{ ml: 1 }}
+            sx={{ input: { color: 'white' }, ml: 1 }} // Set input text color to white
           />
         </Box>
 
-        <InputLabel style={{marginTop:"1rem"}}>Working Days</InputLabel>
+        <InputLabel style={{marginTop:"1rem", color: 'white'}}>Working Days</InputLabel>
         <FormGroup style={{display:"flex",flexDirection:"row"}}>
           <FormControlLabel
             control={
@@ -139,9 +151,17 @@ function Step1({ formData, updateFormData }) {
                 checked={data.workingDays.length === 7}
                 onChange={handleAllWorkingDaysChange}
                 value="all"
+                sx={{
+                  color: 'white', // Checkbox outline color
+                  '&.Mui-checked': {
+                    color: 'white', // Checkbox checked color
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)' // White background on check
+                  }
+                }}
               />
             }
             label="All"
+            style={{ color: 'white' }} // Set label text color to white
           />
           {['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map(day => (
             <FormControlLabel
@@ -151,9 +171,17 @@ function Step1({ formData, updateFormData }) {
                   checked={data.workingDays.includes(day)}
                   onChange={handleWorkingDaysChange}
                   value={day}
+                  sx={{
+                    color: 'white', // Checkbox outline color
+                    '&.Mui-checked': {
+                      color: 'white', // Checkbox checked color
+                      backgroundColor: 'rgba(255, 255, 255, 0.2)' // White background on check
+                    }
+                  }}
                 />
               }
               label={day}
+              style={{ color: 'white' }} // Set label text color to white
             />
           ))}
         </FormGroup>
